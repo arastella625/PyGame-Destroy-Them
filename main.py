@@ -1,16 +1,17 @@
 import pygame
-import player
+from player import Player
 
 MAIN_PLAYER_START_X = 375
 MAIN_PLAYER_START_Y = 275
-MAIN_PLAYER = player.Player(MAIN_PLAYER_START_X, MAIN_PLAYER_START_Y)
+
 
 def main():
 
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((1280,720))
     pygame.display.set_caption("Pygame Window")
-    clock = pygame.time.Clock() 
+    clock = pygame.time.Clock()
+    player = Player(MAIN_PLAYER_START_X, MAIN_PLAYER_START_Y)
 
     running = True
     while running:
@@ -26,8 +27,8 @@ def main():
 
         # Render graphics here
         # ....
-        MAIN_PLAYER.update()
-        screen.blit(MAIN_PLAYER.image, MAIN_PLAYER.rect)
+        player.update()
+        screen.blit(player.image, player.rect)
 
         pygame.display.flip()   # Update the display
         clock.tick(60)  # Cap the frame rate at 60 FPS  

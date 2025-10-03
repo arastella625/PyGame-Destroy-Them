@@ -3,8 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((255, 0, 0))  # Fill the player with red color
+        self.image = pygame.image.load(r"assets//player.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.speed = 5
