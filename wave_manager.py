@@ -36,6 +36,13 @@ class WaveManager:
                 self.player.take_damage(enemy.give_damage())
                 print("Player hit by enemy!")
                 self.health_bar.take_damage(enemy.give_damage())
+        collisions = pygame.sprite.groupcollide(self.enemies, self.player.bullets, False, True)
+        for enemy, bullets in collisions.items():
+            for bullet in bullets:
+                # bullet has .damage set in FieryBullet
+                enemy.take_damage(bullet.get_damage())
+                enemy.kill() if enemy.is_dead() else None
+                print("Enemy hit by bullet!")
         if self.player.is_dead():
             print("Player is dead!")
             pygame.quit()

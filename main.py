@@ -16,7 +16,7 @@ def main():
     pygame.display.set_caption("Pygame Window")
     clock = pygame.time.Clock()
     player = Player(MAIN_PLAYER_START_X, MAIN_PLAYER_START_Y)
-    background_image = pygame.transform.scale(pygame.image.load(r"assets/background.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)).convert()
+    background_image = pygame.transform.scale(pygame.image.load(r"assets/background.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)).convert() 
     health_bar = HealthBar(20, 20, 200, 25, player.health)
     wave_manager = WaveManager(SCREEN_WIDTH, SCREEN_HEIGHT, player, health_bar)
 

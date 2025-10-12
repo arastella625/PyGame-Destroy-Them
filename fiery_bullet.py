@@ -9,12 +9,13 @@ class FieryBullet(pygame.sprite.Sprite):
         self.rect.center = (x, y)
         self.speed = 10
         self.direction = direction  # Direction should be a tuple (dx, dy)
+        self.damage = 25  # Fixed damage amount for simplicity
 
     def update(self):
         # Update bullet position based on mouse position
         self.rect.x += self.direction[0] * self.speed
         self.rect.y += self.direction[1] * self.speed
-        
+
         # Remove the bullet if it goes off-screen
         if (self.rect.right < 0 or self.rect.left > pygame.display.get_surface().get_width() or
                 self.rect.bottom < 0 or self.rect.top > pygame.display.get_surface().get_height()):
@@ -22,3 +23,6 @@ class FieryBullet(pygame.sprite.Sprite):
     
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+    
+    def get_damage(self):
+        return self.damage  # Fixed damage amount for simplicity

@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.rect.x -= self.speed
-        if keys[pygame.K_RIGHT or keys[pygame.K_d]]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.rect.x += self.speed
         if keys[pygame.K_UP] or keys[pygame.K_w]:
             self.rect.y -= self.speed
@@ -71,3 +71,6 @@ class Player(pygame.sprite.Sprite):
     
     def get_position(self):
         return self.rect.topleft
+    
+    def get_bullets(self):
+        return self.bullets
