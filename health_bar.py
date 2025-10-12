@@ -1,6 +1,6 @@
 import pygame
 
-class HealthBar():
+class HealthBar:
     def __init__(self, x, y, width, height, max_health):
         self.x = x
         self.y = y
@@ -28,7 +28,6 @@ class HealthBar():
             surface.blit(self.health_bar_image, (self.x, self.y))
 
     def take_damage(self, amount):
-        print(f"HealthBar: Taking damage of {amount}. Current health: {self.current_health}")
         self.update(self.current_health - amount)
 
     def heal(self, amount):
@@ -36,4 +35,5 @@ class HealthBar():
 
     def is_dead(self):
         return self.current_health <= 0
+
   

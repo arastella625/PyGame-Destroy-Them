@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.speed = 5
-        self.health = 100
+        self.health = 1000
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
