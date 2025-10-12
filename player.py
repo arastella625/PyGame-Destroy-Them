@@ -22,3 +22,28 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.handle_input()
+
+    def take_damage(self, amount):
+        self.health -= amount
+        if self.health < 0:
+            self.health = 0
+        print(f"Player: Took damage of {amount}. Current health: {self.health}")
+    
+    def is_dead(self):
+        return self.health <= 0
+    
+    def heal(self, amount):
+        self.health += amount
+        if self.health > 100:
+            self.health = 100
+        print(f"Player: Healed by {amount}. Current health: {self.health}")
+    
+    def get_health(self):
+        return self.health
+    
+    def set_health(self, new_health):
+        self.health = max(0, min(100, new_health))
+        print(f"Player: Health set to {self.health}")
+    
+    def get_position(self):
+        return self.rect.topleft
