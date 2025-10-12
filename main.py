@@ -27,28 +27,26 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
                 raise SystemExit ("Exiting the game.")                
-
-        if wave_manager.is_wave_cleared():
-            wave_manager.spawn_wave()
                 
         # Do logical updates here 
         # ....
+        if wave_manager.is_wave_cleared():
+            wave_manager.spawn_wave()
         player.update()
         wave_manager.update()
 
-        screen.fill((0, 0, 0))  # Fill the screen with black
-
         # Render graphics here
         # ....
+        screen.fill((0, 0, 0))  # Fill the screen with black
         screen.blit(background_image, (0, 0))
         screen.blit(player.image, player.rect)
 
         health_bar.draw(screen)
         wave_manager.draw(screen)
+        player.draw(screen) 
 
         pygame.display.flip()   # Update the display
         clock.tick(60)  # Cap the frame rate at 60 FPS  
-
     pygame.quit()
 
 if __name__ == "__main__":

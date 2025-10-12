@@ -11,6 +11,7 @@ class WaveManager:
         self.player = player
         self.health_bar = health_bar
         self.enemies = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
         self.wave_number = 0
         self.spawn_wave()
 
