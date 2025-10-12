@@ -35,7 +35,6 @@ def main():
         # ....
         player.update()
         wave_manager.update()
-        wave_manager.give_player_position() 
 
         screen.fill((0, 0, 0))  # Fill the screen with black
 
