@@ -10,6 +10,8 @@ class Player(pygame.sprite.Sprite):
         self.speed = 5
         self.health = 10000
         self.bullets = pygame.sprite.Group()
+        self.last_shot_time = 0
+        self.shot_cooldown = 500  # milliseconds (1 second)
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -21,9 +23,11 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.rect.y += self.speed
+        current_time = pygame.time.get_ticks()
         if keys[pygame.K_SPACE]:
-            print("Player: Shoot!")
-            self.shoot()
+            if current_time - self.last_shot_time >= self.shot_cooldown:
+                self.shoot()
+                self.last_shot_time = current_time
 
 
     def update(self):

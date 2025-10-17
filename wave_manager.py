@@ -13,6 +13,10 @@ class WaveManager:
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.wave_number = 0
+        self.score = 0
+        # initialize font
+        pygame.font.init()
+        self.font = pygame.font.Font(None, 28)  # None = default font, size 28
         self.spawn_wave()
 
     def spawn_wave(self):
@@ -39,10 +43,14 @@ class WaveManager:
         collisions = pygame.sprite.groupcollide(self.enemies, self.player.bullets, False, True)
         for enemy, bullets in collisions.items():
             for bullet in bullets:
-                # bullet has .damage set in FieryBullet
+                 # bullet has .damage set in FieryBullet
                 enemy.take_damage(bullet.get_damage())
-                enemy.kill() if enemy.is_dead() else None
-                print("Enemy hit by bullet!")
+                if enemy.is_dead():
+                    enemy.kill()
+                    self.score += 100  # placeholder score per kill
+                    print("Enemy killed! Score:", self.score)
+                else:
+                    print("Enemy hit by bullet!")
         if self.player.is_dead():
             print("Player is dead!")
             pygame.quit()
@@ -50,6 +58,20 @@ class WaveManager:
 
     def draw(self, surface):
         self.enemies.draw(surface)
+        # draw each enemy using its custom draw (so overlays/health bars appear)
+        for enemy in self.enemies:
+            # if enemy has its own draw method, use it; otherwise fall back to group draw
+            if hasattr(enemy, "draw"):
+                enemy.draw(surface)
+            else:
+                surface.blit(enemy.image, enemy.rect)
+         # render health and score
+        health_text = self.font.render(f"Health: {self.player.get_health()}", True, (255, 255, 255))
+        score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 0))
+        surface.blit(health_text, (10, 10))
+        # place score at top-right with 10px padding
+        score_pos_x = self.screen_width - score_text.get_width() - 10
+        surface.blit(score_text, (score_pos_x, 10))
 
     def is_wave_cleared(self):
         print("Checking if wave is cleared. Enemies remaining:", len(self.enemies))

@@ -6,12 +6,20 @@ class FlameDude(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.image.load(r"assets/flame_dude.png").convert_alpha()
+        # keep an untouched base image and a working image we can tint
+        self.base_image = pygame.image.load(r"assets/flame_dude.png").convert_alpha()
+        self.image = self.base_image.copy()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.speed = 2
         self.health = 50
         self.damage = 10
         self.player_pos = (0, 0)  # Initialize player position
+        # damage flash state (milliseconds)
+        self._last_hit_time = 0
+        self._flash_duration = 200  # ms
+        # health bar display
+        self._show_health_bar = True
 
     def handle_input(self):
         # Move smoothly towards player_pos
@@ -26,8 +34,39 @@ class FlameDude(pygame.sprite.Sprite):
             elif self.rect.y > player_y:
                 self.rect.y -= self.speed
 
+    def draw(self, surface):
+        # blit sprite
+        surface.blit(self.image, self.rect)
+        # draw a small health bar above the enemy (optional)
+        if self._show_health_bar:
+            bar_w = self.rect.width
+            bar_h = 6
+            bar_x = self.rect.x
+            bar_y = self.rect.y - bar_h - 2
+            # background
+            pygame.draw.rect(surface, (60, 60, 60), (bar_x, bar_y, bar_w, bar_h))
+            # health proportion
+            health_ratio = max(0, min(1, self.health / 50))
+            pygame.draw.rect(surface, (255, 50, 50), (bar_x, bar_y, int(bar_w * health_ratio), bar_h))
+            # border
+            pygame.draw.rect(surface, (0, 0, 0), (bar_x, bar_y, bar_w, bar_h), 1)
+
     def update(self):
         self.handle_input()
+        # handle flashing tint after getting hit
+        if self._last_hit_time:
+            now = pygame.time.get_ticks()
+            if now - self._last_hit_time < self._flash_duration:
+                # create a tinted copy
+                tinted = self.base_image.copy()
+                overlay = pygame.Surface(self.base_image.get_size(), pygame.SRCALPHA)
+                overlay.fill((255, 0, 0, 120))  # red semi-transparent overlay
+                tinted.blit(overlay, (0, 0), special_flags=pygame.BLEND_RGBA_ADD)
+                self.image = tinted
+            else:
+                # end flashing
+                self.image = self.base_image
+                self._last_hit_time = 0
     
     def avoid_overlap(self, others):
         for other in others:
@@ -42,8 +81,10 @@ class FlameDude(pygame.sprite.Sprite):
     def take_damage(self, amount):
         self.health -= amount
         if self.health < 0:
-            self.health = 0
+             self.health = 0
         print(f"FlameDude: Took damage of {amount}. Current health: {self.health}")
+        # trigger flash when hit
+        self._last_hit_time = pygame.time.get_ticks()
     
     def give_damage(self):
         return self.damage  # Fixed damage amount for simplicity
@@ -95,6 +136,8 @@ class FlameDude(pygame.sprite.Sprite):
         self.health = 50
         self.player_pos = (0, 0)
         print("FlameDude: Reset to initial state")
+        self.image = self.base_image
+        self._last_hit_time = 0
     
     def is_near_player(self, threshold):
         distance = self.get_distance_to_player()
