@@ -95,3 +95,6 @@ Place graphical assets in the assets/ folder at the project root:
 Run from an integrated terminal (VS Code) or an external terminal so stdout/stderr and debug prints (file paths, save confirmations) are visible.
 
 Tests use tempfile and remove temporary files after each run. If you want to inspect test-created files, add a print() in the test or disable cleanup temporarily.
+
+
+https://github.com/arastella625/PyGame-Destroy-Them.git
